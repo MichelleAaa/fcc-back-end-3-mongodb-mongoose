@@ -1,9 +1,37 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
+// process.env.MONGO_URI is in the .env file. It was obtained by following the setup instructions here - https://www.freecodecamp.org/news/get-started-with-mongodb-atlas/
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
-let Person;
+const personSchema = new Schema({
+    name: {
+        type: String,
+        required: true
+    },
+    age: {
+        type: Number
+    },
+    favoriteFoods: {
+        type: [String]
+    }
+}, {
+    timestamps: true //this is a second optional argument. In this case, we are using timestamps as true. This will cause mongoose to add two values, ‘created at’ and added at. When a document is created it will be given a ‘created at’ and ‘updated at’ property. Thereafter, whenever it’s updated, the ‘updated at’ property will be updated by mongoose. 
+});
+
+// Alternative syntax for the above:
+// const personSchema = new Schema({
+//   name: { type: String, required: true },
+//   age: Number,
+//   favoriteFoods: [String]
+// });
+
+// Creates the model called Person from the personSchema:
+let Person = mongoose.model('Person', personSchema);
+
+// module.exports = Person; -- If you wanted to export it for use in another file.
+
 
 const createAndSavePerson = (done) => {
   done(null /*, data*/);
