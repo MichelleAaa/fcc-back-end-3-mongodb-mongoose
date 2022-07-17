@@ -3,7 +3,10 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 // process.env.MONGO_URI is in the .env file. It was obtained by following the setup instructions here - https://www.freecodecamp.org/news/get-started-with-mongodb-atlas/
-mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(process.env.MONGO_URI, {
+// useNewUrlParser: true, 
+    // useUnifiedTopology: true
+  });
 
 const personSchema = new Schema({
     name: {
@@ -32,9 +35,15 @@ let Person = mongoose.model('Person', personSchema);
 
 // module.exports = Person; -- If you wanted to export it for use in another file.
 
-
+// Creates and Saves a Person
 const createAndSavePerson = (done) => {
-  done(null /*, data*/);
+  let newPerson = new Person({name: "Jane Smith", age: 32, favoriteFoods: ["pizza", "apples"]});
+
+  // data will be the data that gets saved (if successful)
+  newPerson.save(function(err, data) {
+    if (err) return console.error(err);
+    done(null, data)
+  });
 };
 
 const createManyPeople = (arrayOfPeople, done) => {
