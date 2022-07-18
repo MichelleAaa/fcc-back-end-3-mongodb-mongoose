@@ -114,7 +114,12 @@ const removeById = (personId, done) => {
 const removeManyPeople = (done) => {
   const nameToRemove = "Mary";
 
-  done(null /*, data*/);
+  // .remove() requires the condition and the callback.
+  // The Model.remove() doesn’t return the deleted document, but a JSON object containing the outcome of the operation, and the number of items affected. 
+  Person.remove({name: nameToRemove}, (err, response) => {
+    if(err) return console.log(err);
+    done(null, response);
+  })
 };
 
 const queryChain = (done) => {
