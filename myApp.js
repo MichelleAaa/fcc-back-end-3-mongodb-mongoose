@@ -78,9 +78,20 @@ const findPersonById = (personId, done) => {
 };
 
 const findEditThenSave = (personId, done) => {
-  const foodToAdd = "hamburger";
+  const foodToAdd = 'hamburger';
 
-  done(null /*, data*/);
+  // .findById() method to find a person by _id with the parameter personId as search key. -- this will be passed in.
+  Person.findById(personId, (err, person) => {
+    if(err) return console.log(err); 
+  
+    person.favoriteFoods.push(foodToAdd);
+
+    // The file doesn't save automatically like it does with .create() when you use array methods like push (or manual JS methods), so you always need to save the update to the record:
+    person.save((err, data) => {
+      if(err) return console.log(err);
+      done(null, data);
+    })
+  })
 };
 
 const findAndUpdate = (personName, done) => {
