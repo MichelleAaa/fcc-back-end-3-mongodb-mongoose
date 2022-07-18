@@ -125,7 +125,19 @@ const removeManyPeople = (done) => {
 const queryChain = (done) => {
   const foodToSearch = "burrito";
 
-  done(null /*, data*/);
+  // Searches the favoriteFoods arrays to find the foodToSearch.
+  Person.find({favoriteFoods: foodToSearch})
+  // sorts by the name field - 1 is for ascending order. can also sort by -1. 
+  .sort({name: 1})
+  // limits to two documents only
+  .limit(2)
+  // If you want to exclude a field, you can just do .select("-field_I_dont_want") (Note the - = it means minus this field. If you don't put a dash, then it would only include the age field)
+  .select('-age')
+  // Note that you have to use the callback in exec() when using method chaining like this.
+  .exec((err, response) => {
+    if(err) return console.log(err);
+    done(null, response);
+  }); 
 };
 
 /** **Well Done !!**
