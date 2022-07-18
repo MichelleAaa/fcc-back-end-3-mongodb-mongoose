@@ -96,8 +96,12 @@ const findEditThenSave = (personId, done) => {
 
 const findAndUpdate = (personName, done) => {
   const ageToSet = 20;
-
-  done(null /*, data*/);
+  // findOneAndUpdate uses ( conditions , update , options , callback ) as arguments.
+// To return the updated document, you need to pass the options document { new: true } as the 3rd argument to findOneAndUpdate(). By default, these methods return the unmodified object.
+  Person.findOneAndUpdate({ name: personName }, { age: ageToSet }, { new: true }, (err, data) => {
+      if(err) return console.log(err);
+      done(null, data);
+    })
 };
 
 const removeById = (personId, done) => {
